@@ -1,23 +1,31 @@
 
 
+const Paciente = ({ paciente, setPaciente }) => {
 
-const Paciente = () => {
+    const { nombre, propietario, email, fecha, sintomas, id } = paciente;
+
     return (
         <div className="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded-xl">
+            <p className="font-bold mb-3 text-gray-700 uppercase" >Nombre: {''}
+                <span className="font-normal normal-case" > {nombre} </span>
+            </p>
             <p className="font-bold mb-3 text-gray-700 uppercase" >Propietario: {''}
-                <span className="font-normal normal-case" >Dani</span>
+                <span className="font-normal normal-case" > {propietario}  </span>
             </p>
             <p className="font-bold mb-3 text-gray-700 uppercase" >Email: {''}
-                <span className="font-normal normal-case" >email@email.com</span>
+                <span className="font-normal normal-case" >{email}</span>
             </p>
             <p className="font-bold mb-3 text-gray-700 uppercase" >Fecha Alta: {''}
-                <span className="font-normal normal-case" >10 de Diciembre de 2021</span>
+                <span className="font-normal normal-case" >{fecha}</span>
             </p>
             <p className="font-bold mb-3 text-gray-700 uppercase" >Síntomas: {''}
-                <span className="font-normal normal-case" > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat</span>
+                <span className="font-normal normal-case" > {sintomas}</span>
             </p>
 
-
+            <div  >
+                <button onClick={() => setPaciente(paciente)} type="button" className="py-2 px-10 bg-blue-600 font-bold text-white uppercase rounded-md hover:bg-blue-800 cursor-pointer" >Editar</button>
+                <button type="button" className="py-2 px-10 bg-red-600 font-bold text-white uppercase rounded-md hover:bg-red-800 cursor-pointer" >Eliminar</button>
+            </div>
 
         </div>
     )

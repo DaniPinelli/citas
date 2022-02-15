@@ -1,6 +1,7 @@
-import { useState, setstate } from 'react';
+import { useState, useEffect } from 'react';
+import Error from './Error';
 
-const Formulario = ({ pacientes, setPacientes }) => {
+const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
 
     const [nombre, setNombre] = useState('');
     const [propietario, setPropietario] = useState('');
@@ -9,6 +10,24 @@ const Formulario = ({ pacientes, setPacientes }) => {
     const [sintomas, setSintomas] = useState('');
 
     const [error, setError] = useState(false);
+
+    useEffect(() => {
+        if (Object.keys(paciente).length > 0) {
+            setNombre(paciente.nombre);
+            setPropietario(paciente.propietario);
+            setEmail(paciente.email);
+            setFecha(paciente.fecha);
+            setSintomas(paciente.sintomas);
+        }
+    }, [paciente])
+
+    const generarId = () => {
+        const random = Math.random().toString(36).substr(2);
+        const fecha = Date.now().toString(36);
+
+        return random + fecha;
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,10 +46,26 @@ const Formulario = ({ pacientes, setPacientes }) => {
             propietario,
             email,
             fecha,
-            sintomas
+            sintomas,
+
+        }
+        if (paciente.id) {
+            objetoPaciente.id = paciente.id;
+
+            const pacientesActualizados = pacientes.map(pacienteState => pacienteState.id ===
+                paciente.id ? objetoPaciente : pacienteState)
+
+            setPacientes(pacientesActualizados)
+            setPaciente({})
+
+
+
+        } else {
+            objetoPaciente.id = generarId();
+            setPacientes([...pacientes, objetoPaciente])
         }
 
-        setPacientes([...pacientes, objetoPaciente])
+
 
         setNombre('')
         setPropietario('')
@@ -52,7 +87,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg py-2 px-5" >
 
 
-                {error && <div> <p className="text-red-600 text-center uppercase font-bold mt-2" >Todos los campos son obligatorios</p></div>}
+                {error && <Error><p className="text-red-600 text-center uppercase font-bold mt-2" >Todos los campos son obligatorios</p></Error>}
                 <div className="mt-5" >
                     <label className="block text-gray-800 uppercase font-bold" htmlFor="mascota" >Nombre Mascota</label>
                     <input value={nombre} onChange={(e) => setNombre(e.target.value)} id="mascota" className="border-2 w-full p-2 mt-2 placeholder-gray-500 rounded-md" type="text" placeholder="Nombre de mascota" />
@@ -74,7 +109,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
                     <textarea value={sintomas} onChange={(e) => setSintomas(e.target.value)} id="sintomas" className="border-2 w-full p-2 mt-2 placeholder-gray-500 rounded-md" placeholder="Descripción de los síntomas" />
                 </div>
 
-                <input type="submit" className="bg-indigo-600 w-full p-3 text-white uppercase rounded-md hover:bg-indigo-800 cursor-pointer" value="Agregar Paciente" />
+                <input type="submit" className="bg-indigo-600 w-full p-3 text-white uppercase rounded-md hover:bg-indigo-800 cursor-pointer" value={paciente.id ? 'Guardar Cambios' : 'Agregar Paciente'} />
             </form>
         </div>
     )
